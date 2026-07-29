@@ -74,6 +74,88 @@ public record YashConfig(
                 glow, stretch, pulse, reducedMotion);
     }
 
+    public YashConfig withTheme(SelectorTheme newTheme) {
+        return new YashConfig(
+                enabled,
+                animation,
+                Objects.requireNonNull(newTheme, "newTheme"),
+                tint,
+                opacity,
+                scale,
+                glow,
+                stretch,
+                pulse,
+                reducedMotion);
+    }
+
+    public YashConfig withTint(TintSettings newTint) {
+        return new YashConfig(
+                enabled,
+                animation,
+                theme,
+                Objects.requireNonNull(newTint, "newTint"),
+                opacity,
+                scale,
+                glow,
+                stretch,
+                pulse,
+                reducedMotion);
+    }
+
+    public YashConfig withOpacity(double newOpacity) {
+        return new YashConfig(
+                enabled, animation, theme, tint, newOpacity, scale,
+                glow, stretch, pulse, reducedMotion);
+    }
+
+    public YashConfig withScale(double newScale) {
+        return new YashConfig(
+                enabled, animation, theme, tint, opacity, newScale,
+                glow, stretch, pulse, reducedMotion);
+    }
+
+    public YashConfig withGlow(GlowSettings newGlow) {
+        return new YashConfig(
+                enabled,
+                animation,
+                theme,
+                tint,
+                opacity,
+                scale,
+                Objects.requireNonNull(newGlow, "newGlow"),
+                stretch,
+                pulse,
+                reducedMotion);
+    }
+
+    public YashConfig withStretch(StretchSettings newStretch) {
+        return new YashConfig(
+                enabled,
+                animation,
+                theme,
+                tint,
+                opacity,
+                scale,
+                glow,
+                Objects.requireNonNull(newStretch, "newStretch"),
+                pulse,
+                reducedMotion);
+    }
+
+    public YashConfig withPulse(PulseSettings newPulse) {
+        return new YashConfig(
+                enabled,
+                animation,
+                theme,
+                tint,
+                opacity,
+                scale,
+                glow,
+                stretch,
+                Objects.requireNonNull(newPulse, "newPulse"),
+                reducedMotion);
+    }
+
     public YashConfig withReducedMotion(boolean newReducedMotion) {
         return new YashConfig(
                 enabled, animation, theme, tint, opacity, scale,

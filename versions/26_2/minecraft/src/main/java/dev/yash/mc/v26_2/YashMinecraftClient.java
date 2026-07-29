@@ -2,12 +2,15 @@ package dev.yash.mc.v26_2;
 
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import dev.yash.core.animation.AnimationFrame;
-import dev.yash.core.animation.WrapMode;
 import dev.yash.core.config.ConfigLoadResult;
 import dev.yash.core.config.ConfigStore;
+import dev.yash.core.config.EffectiveConfig;
 import dev.yash.core.config.YashConfig;
+import dev.yash.core.visual.SelectorEffectEngine;
+import dev.yash.core.visual.SelectorVisualEffects;
 import dev.yash.mc.v26_2.hud.HotbarAnimationController;
 import dev.yash.mc.v26_2.hud.HotbarLayout;
+import dev.yash.mc.v26_2.hud.HotbarSelectorRenderer;
 import java.nio.file.Path;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -25,10 +28,14 @@ public final class YashMinecraftClient {
 
     private final ConfigStore configStore;
     private final HotbarAnimationController animationController;
+    private final SelectorEffectEngine effectEngine;
+    private final HotbarSelectorRenderer selectorRenderer;
 
     private YashMinecraftClient(ConfigStore configStore, YashConfig config) {
         this.configStore = configStore;
         this.animationController = new HotbarAnimationController(config);
+        this.effectEngine = new SelectorEffectEngine();
+        this.selectorRenderer = new HotbarSelectorRenderer();
     }
 
     /** Initializes the version layer from a loader-provided configuration path. */
@@ -60,6 +67,7 @@ public final class YashMinecraftClient {
     public static void resetAnimation() {
         if (instance != null) {
             instance.animationController.resetForLifecycle();
+            instance.effectEngine.reset();
         }
     }
 
@@ -83,9 +91,10 @@ public final class YashMinecraftClient {
         }
 
         int selectedSlot = player.getInventory().getSelectedSlot();
+        double nowSeconds = Util.getNanos() * NANOS_TO_SECONDS;
         AnimationFrame frame = client.animationController.update(
                 selectedSlot,
-                Util.getNanos() * NANOS_TO_SECONDS,
+                nowSeconds,
                 minecraft.level,
                 player,
                 player.isAlive(),
@@ -93,61 +102,29 @@ public final class YashMinecraftClient {
                 graphics.guiHeight(),
                 minecraft.getWindow().getGuiScale());
         if (frame == null) {
+            client.effectEngine.reset();
             return false;
+        }
+        if (client.animationController.lastUpdateReset()) {
+            client.effectEngine.reset();
         }
 
         int selectorBaseX = HotbarLayout.selectorBaseX(vanillaX, selectedSlot);
-        if (frame.wrapMode() == WrapMode.WRAP) {
-            renderWrappedSelector(
-                    graphics, pipeline, sprite, selectorBaseX, y, width, height, frame);
-        } else {
-            graphics.blitSprite(
-                    pipeline,
-                    sprite,
-                    HotbarLayout.selectorX(selectorBaseX, frame.position()),
-                    y,
-                    width,
-                    height);
-        }
-        return true;
-    }
-
-    private static void renderWrappedSelector(
-            GuiGraphicsExtractor graphics,
-            RenderPipeline pipeline,
-            Identifier sprite,
-            int selectorBaseX,
-            int y,
-            int width,
-            int height,
-            AnimationFrame frame) {
-        double canonicalPosition = frame.wrappedPosition();
-        graphics.enableScissor(
+        EffectiveConfig effectiveConfig = client.animationController.effectiveConfig();
+        SelectorVisualEffects effects = client.effectEngine.sample(
+                frame, effectiveConfig, nowSeconds);
+        client.selectorRenderer.render(
+                graphics,
+                pipeline,
+                sprite,
                 selectorBaseX,
                 y,
-                selectorBaseX + HotbarLayout.SELECTOR_TRAVEL_DISTANCE + width,
-                y + height);
-        try {
-            graphics.blitSprite(
-                    pipeline,
-                    sprite,
-                    HotbarLayout.selectorX(selectorBaseX, canonicalPosition),
-                    y,
-                    width,
-                    height);
-            double seamPosition = HotbarLayout.wrapSeamPosition(frame);
-            if (Double.isFinite(seamPosition)) {
-                graphics.blitSprite(
-                        pipeline,
-                        sprite,
-                        HotbarLayout.selectorX(selectorBaseX, seamPosition),
-                        y,
-                        width,
-                        height);
-            }
-        } finally {
-            graphics.disableScissor();
-        }
+                width,
+                height,
+                frame,
+                effectiveConfig,
+                effects);
+        return true;
     }
 
     private static YashMinecraftClient requireInstance() {

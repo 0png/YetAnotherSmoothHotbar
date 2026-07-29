@@ -36,6 +36,10 @@ public final class HotbarAnimationController {
         return storedConfig;
     }
 
+    public EffectiveConfig effectiveConfig() {
+        return effectiveConfig;
+    }
+
     /** Re-resolves runtime accessibility policy only when the saved configuration changes. */
     public void setConfig(YashConfig config) {
         YashConfig replacement = Objects.requireNonNull(config, "config");
