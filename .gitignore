@@ -15,3 +15,9 @@ Thumbs.db
 .env
 .env.*
 !.env.example
+
+# Local planning and agent instructions
+/AGENTS.md
+/agents.md
+/spec.md
+/task.md
