@@ -12,6 +12,9 @@ public record ThemeMetadata(
         RgbColor suggestedGlowColor,
         double suggestedPulseStrength,
         double suggestedStretchStrength) {
+    public static final int VANILLA_SELECTOR_WIDTH = 24;
+    public static final int VANILLA_SELECTOR_HEIGHT = 23;
+
     public ThemeMetadata {
         Objects.requireNonNull(spritePath, "spritePath");
         Objects.requireNonNull(suggestedGlowColor, "suggestedGlowColor");

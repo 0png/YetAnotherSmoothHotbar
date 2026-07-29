@@ -4,31 +4,44 @@ package dev.yash.core.config;
 public enum SelectorTheme {
     VANILLA_RESOURCE_PACK(
             "vanilla_resource_pack",
-            new ThemeMetadata("", 24, 23, 0, 0, RgbColor.WHITE, 0.0, 0.0)),
+            new ThemeMetadata(
+                    "", ThemeMetadata.VANILLA_SELECTOR_WIDTH,
+                    ThemeMetadata.VANILLA_SELECTOR_HEIGHT,
+                    0, 0, RgbColor.WHITE, 0.0, 0.0)),
     CLEAN(
             "clean",
             new ThemeMetadata(
-                    "hud/hotbar_selector/clean", 24, 24, 0, 0,
+                    "hud/hotbar_selector/clean",
+                    ThemeMetadata.VANILLA_SELECTOR_WIDTH,
+                    ThemeMetadata.VANILLA_SELECTOR_HEIGHT, 0, 0,
                     RgbColor.WHITE, 0.04, 0.05)),
     CREEPER(
             "creeper",
             new ThemeMetadata(
-                    "hud/hotbar_selector/creeper", 26, 26, 0, 0,
+                    "hud/hotbar_selector/creeper",
+                    ThemeMetadata.VANILLA_SELECTOR_WIDTH,
+                    ThemeMetadata.VANILLA_SELECTOR_HEIGHT, 0, 0,
                     new RgbColor(0x70E64A), 0.06, 0.08)),
     ENDERMAN(
             "enderman",
             new ThemeMetadata(
-                    "hud/hotbar_selector/enderman", 26, 26, 0, 0,
+                    "hud/hotbar_selector/enderman",
+                    ThemeMetadata.VANILLA_SELECTOR_WIDTH,
+                    ThemeMetadata.VANILLA_SELECTOR_HEIGHT, 0, 0,
                     new RgbColor(0xC14CFF), 0.08, 0.08)),
     WOLF(
             "wolf",
             new ThemeMetadata(
-                    "hud/hotbar_selector/wolf", 28, 30, 0, -2,
+                    "hud/hotbar_selector/wolf",
+                    ThemeMetadata.VANILLA_SELECTOR_WIDTH,
+                    ThemeMetadata.VANILLA_SELECTOR_HEIGHT, 0, 0,
                     new RgbColor(0xE8E5DE), 0.10, 0.06)),
     BEE(
             "bee",
             new ThemeMetadata(
-                    "hud/hotbar_selector/bee", 32, 26, 0, 0,
+                    "hud/hotbar_selector/bee",
+                    ThemeMetadata.VANILLA_SELECTOR_WIDTH,
+                    ThemeMetadata.VANILLA_SELECTOR_HEIGHT, 0, 0,
                     new RgbColor(0xFFD24A), 0.08, 0.12));
 
     private final String id;

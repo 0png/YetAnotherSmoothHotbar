@@ -35,8 +35,8 @@ final class SelectorRenderGeometryTest {
                 SelectorTheme.BEE.metadata(),
                 effects(1.5, 1.25));
 
-        assertEquals(48, placement.width());
-        assertEquals(33, placement.height());
+        assertEquals(36, placement.width());
+        assertEquals(29, placement.height());
         assertEquals(152, placement.x() + placement.width() / 2);
     }
 
