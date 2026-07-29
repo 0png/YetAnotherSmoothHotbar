@@ -1,0 +1,32 @@
+plugins {
+    id 'base'
+    id 'net.fabricmc.fabric-loom' version "${loom_version}" apply false
+}
+
+allprojects {
+    group = project.maven_group
+    version = project.mod_version
+
+    repositories {
+        mavenCentral()
+    }
+}
+
+subprojects {
+    plugins.withId('java') {
+        java {
+            sourceCompatibility = JavaVersion.VERSION_25
+            targetCompatibility = JavaVersion.VERSION_25
+            withSourcesJar()
+        }
+
+        tasks.withType(JavaCompile).configureEach {
+            options.encoding = 'UTF-8'
+            options.release = 25
+        }
+
+        tasks.withType(Test).configureEach {
+            useJUnitPlatform()
+        }
+    }
+}

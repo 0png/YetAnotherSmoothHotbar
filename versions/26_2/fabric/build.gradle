@@ -1,0 +1,58 @@
+plugins {
+    id 'net.fabricmc.fabric-loom'
+}
+
+configurations {
+    bundle
+}
+
+loom {
+    splitEnvironmentSourceSets()
+
+    mods {
+        yash {
+            sourceSet sourceSets.main
+            sourceSet sourceSets.client
+        }
+    }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+    implementation project(':versions:26_2:minecraft')
+    bundle(project(':shared')) {
+        transitive = false
+    }
+    bundle(project(':versions:26_2:minecraft')) {
+        transitive = false
+    }
+}
+
+tasks.named('processClientResources') {
+    inputs.property 'version', project.version
+
+    filesMatching('fabric.mod.json') {
+        expand version: project.version
+    }
+}
+
+jar {
+    archiveBaseName = "${project.archive_base_name}-${project.minecraft_version}-fabric"
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    dependsOn configurations.bundle
+    from {
+        configurations.bundle.collect { dependency -> zipTree(dependency) }
+    }
+    from(rootProject.file('LICENSE')) {
+        into 'META-INF'
+        rename { 'LICENSE_YASH' }
+    }
+    from(rootProject.file('ASSETS_LICENSE.md')) {
+        into 'META-INF'
+        rename { 'ASSETS_LICENSE_YASH.md' }
+    }
+}

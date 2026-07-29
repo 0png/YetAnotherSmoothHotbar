@@ -1,0 +1,57 @@
+name: Bug report
+description: Report a reproducible problem in YASH
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for helping improve YASH. Please verify the issue with the latest compatible release first.
+  - type: input
+    id: yash-version
+    attributes:
+      label: YASH version
+      placeholder: e.g. 1.0.0
+    validations:
+      required: true
+  - type: input
+    id: minecraft-version
+    attributes:
+      label: Minecraft version and loader
+      placeholder: e.g. Minecraft 26.2, Fabric Loader 0.19.3
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Problem description
+      description: Explain what happened and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction steps
+      placeholder: |
+        1. Start Minecraft with...
+        2. Select...
+        3. Observe...
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs and mod list
+      description: Attach latest.log and the complete mod list. Remove account names or other private information.
+    validations:
+      required: true
+  - type: dropdown
+    id: resource-pack
+    attributes:
+      label: Does this reproduce without third-party resource packs?
+      options:
+        - "Yes"
+        - "No"
+        - "Not tested"
+    validations:
+      required: true
