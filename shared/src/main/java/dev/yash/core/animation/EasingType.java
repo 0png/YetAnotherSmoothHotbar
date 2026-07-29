@@ -1,0 +1,115 @@
+package dev.yash.core.animation;
+
+/** Time curves available to non-spring selector animations. */
+public enum EasingType {
+    LINEAR {
+        @Override
+        double transformUnit(double progress) {
+            return progress;
+        }
+
+        @Override
+        double derivativeUnit(double progress) {
+            return 1.0;
+        }
+    },
+    EASE_OUT_QUAD {
+        @Override
+        double transformUnit(double progress) {
+            double remaining = 1.0 - progress;
+            return 1.0 - remaining * remaining;
+        }
+
+        @Override
+        double derivativeUnit(double progress) {
+            return 2.0 * (1.0 - progress);
+        }
+    },
+    EASE_OUT_CUBIC {
+        @Override
+        double transformUnit(double progress) {
+            double remaining = 1.0 - progress;
+            return 1.0 - remaining * remaining * remaining;
+        }
+
+        @Override
+        double derivativeUnit(double progress) {
+            double remaining = 1.0 - progress;
+            return 3.0 * remaining * remaining;
+        }
+    },
+    EASE_OUT_QUINT {
+        @Override
+        double transformUnit(double progress) {
+            double remaining = 1.0 - progress;
+            return 1.0 - Math.pow(remaining, 5.0);
+        }
+
+        @Override
+        double derivativeUnit(double progress) {
+            return 5.0 * Math.pow(1.0 - progress, 4.0);
+        }
+    },
+    EASE_IN_OUT_CUBIC {
+        @Override
+        double transformUnit(double progress) {
+            if (progress < 0.5) {
+                return 4.0 * progress * progress * progress;
+            }
+            return 1.0 - Math.pow(-2.0 * progress + 2.0, 3.0) / 2.0;
+        }
+
+        @Override
+        double derivativeUnit(double progress) {
+            if (progress < 0.5) {
+                return 12.0 * progress * progress;
+            }
+            double remaining = 1.0 - progress;
+            return 12.0 * remaining * remaining;
+        }
+    },
+    SMOOTHSTEP {
+        @Override
+        double transformUnit(double progress) {
+            return progress * progress * (3.0 - 2.0 * progress);
+        }
+
+        @Override
+        double derivativeUnit(double progress) {
+            return 6.0 * progress * (1.0 - progress);
+        }
+    },
+    /** Marker for the analytic damped-spring path in {@link AnimationEngine}. */
+    SPRING {
+        @Override
+        double transformUnit(double progress) {
+            throw new UnsupportedOperationException("Spring motion is sampled by AnimationEngine");
+        }
+
+        @Override
+        double derivativeUnit(double progress) {
+            throw new UnsupportedOperationException("Spring motion is sampled by AnimationEngine");
+        }
+    };
+
+    /** Applies this easing to a normalized progress value. */
+    public double transform(double progress) {
+        return transformUnit(clampUnit(progress));
+    }
+
+    /** Returns the slope of this easing at a normalized progress value. */
+    public double derivative(double progress) {
+        return derivativeUnit(clampUnit(progress));
+    }
+
+    abstract double transformUnit(double progress);
+
+    abstract double derivativeUnit(double progress);
+
+    private static double clampUnit(double value) {
+        if (!Double.isFinite(value)) {
+            throw new IllegalArgumentException("Progress must be finite");
+        }
+        return Math.max(0.0, Math.min(1.0, value));
+    }
+}
