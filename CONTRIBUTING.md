@@ -1,6 +1,6 @@
 # Contributing to YASH
 
-感謝你協助改善 YASH。提交變更前，請先閱讀 [`spec.md`](spec.md)與 [`task.md`](task.md)。
+感謝你協助改善 YASH。提交變更前，請先閱讀 [`README.md`](README.md)，並確認是否已有相關 Issue 或 Pull Request。
 
 ## Branch 模型
 
