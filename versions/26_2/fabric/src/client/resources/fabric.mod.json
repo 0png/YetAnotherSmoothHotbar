@@ -17,6 +17,9 @@
   "entrypoints": {
     "client": [
       "dev.yash.fabric.v26_2.YashFabricClient"
+    ],
+    "modmenu": [
+      "dev.yash.fabric.v26_2.YashModMenuIntegration"
     ]
   },
   "mixins": [

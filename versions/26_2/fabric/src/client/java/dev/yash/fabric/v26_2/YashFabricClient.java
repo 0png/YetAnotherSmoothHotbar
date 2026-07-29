@@ -29,6 +29,7 @@ public final class YashFabricClient implements ClientModInitializer {
                 YashResourceReloadListener.ID, new YashResourceReloadListener());
         resourceLoader.addListenerOrdering(
                 ResourceReloaderKeys.Client.TEXTURES, YashResourceReloadListener.ID);
+        YashKeyBindings.register();
         LOGGER.info(
                 "{} initialized for Minecraft {} with configuration source {}",
                 YashCore.MOD_NAME,

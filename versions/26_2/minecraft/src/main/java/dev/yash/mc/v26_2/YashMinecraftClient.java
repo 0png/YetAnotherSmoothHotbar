@@ -11,11 +11,13 @@ import dev.yash.core.visual.SelectorVisualEffects;
 import dev.yash.mc.v26_2.hud.HotbarAnimationController;
 import dev.yash.mc.v26_2.hud.HotbarLayout;
 import dev.yash.mc.v26_2.hud.HotbarSelectorRenderer;
+import dev.yash.mc.v26_2.screen.YashConfigScreen;
 import java.nio.file.Path;
 import java.util.Objects;
 import java.util.function.Consumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.Util;
@@ -54,6 +56,12 @@ public final class YashMinecraftClient {
 
     public static YashConfig config() {
         return requireInstance().animationController.config();
+    }
+
+    /** Creates the version-owned settings screen for loader and optional integration entrypoints. */
+    public static Screen createConfigScreen(Screen parent) {
+        requireInstance();
+        return new YashConfigScreen(parent);
     }
 
     /** Applies settings immediately; persistence is optional for live previews. */
