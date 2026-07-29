@@ -21,7 +21,7 @@ final class SelectorThemeTest {
     }
 
     @Test
-    void builtInSpritePathsAreUniqueAndGeometryIsHudSafe() {
+    void builtInSpritePathsAreUniqueAndMatchVanillaSelectorFootprint() {
         Set<String> paths = Arrays.stream(SelectorTheme.values())
                 .map(SelectorTheme::metadata)
                 .filter(metadata -> !metadata.resourcePackBacked())
@@ -31,8 +31,10 @@ final class SelectorThemeTest {
         assertEquals(SelectorTheme.values().length - 1, paths.size());
         for (SelectorTheme theme : SelectorTheme.values()) {
             ThemeMetadata metadata = theme.metadata();
-            assertTrue(metadata.nativeWidth() <= 32);
-            assertTrue(metadata.nativeHeight() <= 30);
+            assertEquals(ThemeMetadata.VANILLA_SELECTOR_WIDTH, metadata.nativeWidth());
+            assertEquals(ThemeMetadata.VANILLA_SELECTOR_HEIGHT, metadata.nativeHeight());
+            assertEquals(0, metadata.offsetX());
+            assertEquals(0, metadata.offsetY());
         }
     }
 

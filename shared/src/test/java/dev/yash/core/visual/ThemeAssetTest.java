@@ -29,6 +29,8 @@ final class ThemeAssetTest {
                 assertNotNull(image, () -> "Unreadable theme sprite " + resource);
                 assertEquals(metadata.nativeWidth(), image.getWidth());
                 assertEquals(metadata.nativeHeight(), image.getHeight());
+                assertEquals(ThemeMetadata.VANILLA_SELECTOR_WIDTH, image.getWidth());
+                assertEquals(ThemeMetadata.VANILLA_SELECTOR_HEIGHT, image.getHeight());
                 assertTrue(image.getColorModel().hasAlpha());
                 assertTrue(visiblePixels(image) > 0);
                 assertTrue(transparentPixels(image) > 0);
