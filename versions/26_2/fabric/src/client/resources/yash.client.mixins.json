@@ -2,7 +2,9 @@
   "required": true,
   "package": "dev.yash.fabric.v26_2.mixin",
   "compatibilityLevel": "JAVA_25",
-  "client": [],
+  "client": [
+    "HudMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   }
