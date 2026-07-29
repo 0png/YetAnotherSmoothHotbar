@@ -16,7 +16,7 @@ YASH 是一個 Minecraft Java Edition 的純客戶端 Mod，目標是提供流�
 - Client-side only
 - English 與繁體中文
 
-完整產品規格請參閱 [`spec.md`](spec.md)，分階段工作與驗收條件請參閱 [`task.md`](task.md)。
+公開開發進度、功能討論與驗收紀錄會透過 GitHub Issues 與 Pull Requests 維護。
 
 ## 專案模組
 
