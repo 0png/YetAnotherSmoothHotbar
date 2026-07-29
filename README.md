@@ -52,6 +52,18 @@ versions/26_2/fabric/build/libs/yash-26.2-fabric-<version>.jar
 .\gradlew.bat :versions:26_2:fabric:runClient
 ```
 
+## 遊戲內設定
+
+- 在「控制」中可重新綁定「開啟 YASH 設定」按鍵；預設為 `Y`。
+- 設定畫面提供 Presets、Themes、Advanced 三頁，以及可點擊、自動循環、首尾切換與快速切換的即時預覽。
+- [Mod Menu](https://modrinth.com/mod/modmenu) 是選裝依賴；安裝後可直接從 Mod Menu 開啟設定，未安裝時不影響 YASH 載入。
+
+如需驗證不含 Mod Menu 的開發環境：
+
+```powershell
+.\gradlew.bat :versions:26_2:fabric:runClient -Pyash.excludeModMenuRuntime=true
+```
+
 ## 授權
 
 - 程式碼：MIT，詳見 [`LICENSE`](LICENSE)。

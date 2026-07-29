@@ -2,6 +2,13 @@ plugins {
     id 'net.fabricmc.fabric-loom'
 }
 
+repositories {
+    maven {
+        name = 'TerraformersMC'
+        url = 'https://maven.terraformersmc.com/releases'
+    }
+}
+
 configurations {
     bundle
 }
@@ -21,6 +28,10 @@ dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     implementation "net.fabricmc:fabric-loader:${project.loader_version}"
     implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+    compileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
+    if (!providers.gradleProperty('yash.excludeModMenuRuntime').isPresent()) {
+        localRuntime "com.terraformersmc:modmenu:${project.modmenu_version}"
+    }
 
     implementation project(':versions:26_2:minecraft')
     bundle(project(':shared')) {

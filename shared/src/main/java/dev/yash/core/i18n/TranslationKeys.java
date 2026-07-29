@@ -9,7 +9,8 @@ package dev.yash.core.i18n;
 public final class TranslationKeys {
     public static final String MOD_TITLE = "text.yash.title";
     public static final String OPEN_CONFIG = "key.yash.open_config";
-    public static final String KEY_CATEGORY = "category.yash";
+    public static final String KEY_CATEGORY = "key.category.yash.controls";
+    public static final String SETTINGS_TITLE = "screen.yash.title";
     public static final String OPTION_THEME = "option.yash.theme";
     public static final String OPTION_TINT = "option.yash.effect.tint";
     public static final String OPTION_OPACITY = "option.yash.effect.opacity";
