@@ -2,7 +2,7 @@ package dev.yash.core.animation;
 
 /** Time curves available to non-spring selector animations. */
 public enum EasingType {
-    LINEAR {
+    LINEAR("linear") {
         @Override
         double transformUnit(double progress) {
             return progress;
@@ -13,7 +13,7 @@ public enum EasingType {
             return 1.0;
         }
     },
-    EASE_OUT_QUAD {
+    EASE_OUT_QUAD("ease_out_quad") {
         @Override
         double transformUnit(double progress) {
             double remaining = 1.0 - progress;
@@ -25,7 +25,7 @@ public enum EasingType {
             return 2.0 * (1.0 - progress);
         }
     },
-    EASE_OUT_CUBIC {
+    EASE_OUT_CUBIC("ease_out_cubic") {
         @Override
         double transformUnit(double progress) {
             double remaining = 1.0 - progress;
@@ -38,7 +38,7 @@ public enum EasingType {
             return 3.0 * remaining * remaining;
         }
     },
-    EASE_OUT_QUINT {
+    EASE_OUT_QUINT("ease_out_quint") {
         @Override
         double transformUnit(double progress) {
             double remaining = 1.0 - progress;
@@ -50,7 +50,7 @@ public enum EasingType {
             return 5.0 * Math.pow(1.0 - progress, 4.0);
         }
     },
-    EASE_IN_OUT_CUBIC {
+    EASE_IN_OUT_CUBIC("ease_in_out_cubic") {
         @Override
         double transformUnit(double progress) {
             if (progress < 0.5) {
@@ -68,7 +68,7 @@ public enum EasingType {
             return 12.0 * remaining * remaining;
         }
     },
-    SMOOTHSTEP {
+    SMOOTHSTEP("smoothstep") {
         @Override
         double transformUnit(double progress) {
             return progress * progress * (3.0 - 2.0 * progress);
@@ -80,7 +80,7 @@ public enum EasingType {
         }
     },
     /** Marker for the analytic damped-spring path in {@link AnimationEngine}. */
-    SPRING {
+    SPRING("spring") {
         @Override
         double transformUnit(double progress) {
             throw new UnsupportedOperationException("Spring motion is sampled by AnimationEngine");
@@ -91,6 +91,26 @@ public enum EasingType {
             throw new UnsupportedOperationException("Spring motion is sampled by AnimationEngine");
         }
     };
+
+    private final String id;
+
+    EasingType(String id) {
+        this.id = id;
+    }
+
+    /** Stable value used by configuration files; independent of the Java enum name. */
+    public String id() {
+        return id;
+    }
+
+    public static EasingType fromId(String id) {
+        for (EasingType value : values()) {
+            if (value.id.equals(id)) {
+                return value;
+            }
+        }
+        throw new IllegalArgumentException("Unknown easing id: " + id);
+    }
 
     /** Applies this easing to a normalized progress value. */
     public double transform(double progress) {
