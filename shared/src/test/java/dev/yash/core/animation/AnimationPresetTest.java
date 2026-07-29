@@ -60,6 +60,20 @@ final class AnimationPresetTest {
                 1.01));
     }
 
+    @Test
+    void directConstructionCannotMislabelChangedOfficialParameters() {
+        AnimationConfig edited = new AnimationConfig(
+                AnimationPreset.SMOOTH,
+                0.250,
+                EasingType.EASE_IN_OUT_CUBIC,
+                WrapMode.ACROSS,
+                22.0,
+                1.0,
+                0.0);
+
+        assertEquals(AnimationPreset.CUSTOM, edited.preset());
+    }
+
     private static void assertDurationMillis(AnimationPreset preset, int minimum, int maximum) {
         double durationMillis = preset.config(WrapMode.ACROSS).durationSeconds() * 1_000.0;
         assertTrue(durationMillis >= minimum && durationMillis <= maximum,

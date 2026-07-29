@@ -27,6 +27,16 @@ public record AnimationConfig(
         if (preset != AnimationPreset.DISABLED && durationSeconds == 0.0) {
             throw new IllegalArgumentException("Animated presets must have a positive duration");
         }
+        if (preset != AnimationPreset.CUSTOM
+                && preset != AnimationPreset.DISABLED
+                && !preset.matchesParameters(
+                        durationSeconds,
+                        easing,
+                        springStrength,
+                        springDampingRatio,
+                        springOvershootLimit)) {
+            preset = AnimationPreset.CUSTOM;
+        }
     }
 
     /** Returns the complete defaults for a built-in preset. */
@@ -42,6 +52,66 @@ public record AnimationConfig(
     /** Whether this config uses analytic damped-spring motion. */
     public boolean spring() {
         return animated() && easing == EasingType.SPRING;
+    }
+
+    /** Changes a preset-owned value and marks the result as Custom. */
+    public AnimationConfig withDurationSeconds(double newDurationSeconds) {
+        AnimationConfig base = customizationBase();
+        return new AnimationConfig(
+                AnimationPreset.CUSTOM,
+                newDurationSeconds,
+                base.easing,
+                base.wrapMode,
+                base.springStrength,
+                base.springDampingRatio,
+                base.springOvershootLimit);
+    }
+
+    /** Changes a preset-owned value and marks the result as Custom. */
+    public AnimationConfig withEasing(EasingType newEasing) {
+        AnimationConfig base = customizationBase();
+        return new AnimationConfig(
+                AnimationPreset.CUSTOM,
+                base.durationSeconds,
+                Objects.requireNonNull(newEasing, "newEasing"),
+                base.wrapMode,
+                base.springStrength,
+                base.springDampingRatio,
+                base.springOvershootLimit);
+    }
+
+    /** Changes preset-owned spring values and marks the result as Custom. */
+    public AnimationConfig withSpringParameters(
+            double newStrength,
+            double newDampingRatio,
+            double newOvershootLimit) {
+        AnimationConfig base = customizationBase();
+        return new AnimationConfig(
+                AnimationPreset.CUSTOM,
+                base.durationSeconds,
+                base.easing,
+                base.wrapMode,
+                newStrength,
+                newDampingRatio,
+                newOvershootLimit);
+    }
+
+    /** Wrap is an independent navigation preference and does not change the selected preset. */
+    public AnimationConfig withWrapMode(WrapMode newWrapMode) {
+        return new AnimationConfig(
+                preset,
+                durationSeconds,
+                easing,
+                Objects.requireNonNull(newWrapMode, "newWrapMode"),
+                springStrength,
+                springDampingRatio,
+                springOvershootLimit);
+    }
+
+    private AnimationConfig customizationBase() {
+        return preset == AnimationPreset.DISABLED
+                ? AnimationPreset.CUSTOM.config(wrapMode)
+                : this;
     }
 
     private static void requireFiniteInRange(double value, double minimum, double maximum, String name) {
